@@ -1,0 +1,13 @@
+MAIN        START   3000
+            LDA     NUM1
+            JSUB    ADDNUM
+            STA     RESULT
+            RSUB
+
+ADDNUM      ADD     NUM2
+            RSUB
+
+NUM1        WORD    25
+NUM2        WORD    15
+RESULT      RESW    1
+            END     MAIN
