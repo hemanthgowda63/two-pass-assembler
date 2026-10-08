@@ -1,0 +1,56 @@
+
+========== PASS 1 ==========
+
+SYMBOL TABLE
+--------------------
+MAIN -> 3000
+ADDNUM -> 300C
+NUM1 -> 3012
+NUM2 -> 3015
+RESULT -> 3018
+
+LITERAL TABLE
+--------------------
+
+INTERMEDIATE FILE
+--------------------
+3000	MAIN        START   3000
+3000	LDA     NUM1
+3003	JSUB    ADDNUM
+3006	STA     RESULT
+3009	RSUB
+300C	ADDNUM      ADD     NUM2
+300F	RSUB
+3012	NUM1        WORD    25
+3015	NUM2        WORD    15
+3018	RESULT      RESW    1
+301B	END     MAIN
+
+START ADDRESS : 3000
+PROGRAM LENGTH : 001B
+
+========== PASS 2 ==========
+
+OBJECT CODE
+------------------------------------------------
+Address    Instruction        Object Code 
+------------------------------------------------
+3000       LDA NUM1           003012      
+3003       JSUB ADDNUM        48300C      
+3006       STA RESULT         0C3018      
+3009       RSUB               4C0000      
+300C       ADDNUM ADD NUM2    183015      
+300F       RSUB               4C0000      
+3012       NUM1 WORD 25       000019      
+3015       NUM2 WORD 15       00000F      
+------------------------------------------------
+
+LITERAL POOL
+------------------------------------------------
+------------------------------------------------
+
+========== OBJECT PROGRAM ==========
+
+H^MAIN  ^003000^00001B
+T^003000^18^003012^48300C^0C3018^4C0000^183015^4C0000^000019^00000F
+E^003000
