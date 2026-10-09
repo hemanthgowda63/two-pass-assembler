@@ -16,53 +16,53 @@ export default function ResultCard({ memorySnapshot, totalSteps, isFinished }) {
   const resultVal = getMemVal('RESULT') ?? 40;
 
   return (
-    <div className="glass-card p-5 bg-gradient-to-r from-cyan-950/40 via-blue-950/30 to-indigo-950/40 border border-cyan-500/40 glow-active">
+    <div className="brutalist-card bg-green-300 p-5 border-4 border-black shadow-[8px_8px_0px_0px_#000]">
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div className="flex items-center gap-3">
-          <div className="p-3 bg-emerald-500/20 border border-emerald-400/40 rounded-xl text-emerald-400">
-            <Award className="w-7 h-7" />
+          <div className="p-3 bg-black text-yellow-300 border-2 border-black shadow-[3px_3px_0px_0px_#000]">
+            <Award className="w-8 h-8" />
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <h3 className="text-lg font-bold text-white tracking-wide">
+              <h3 className="text-xl font-black text-black uppercase tracking-tight">
                 PROGRAM EXECUTION COMPLETE
               </h3>
-              <span className="badge badge-emerald flex items-center gap-1">
-                <CheckCircle className="w-3.5 h-3.5" />
+              <span className="brutalist-badge brutalist-badge-yellow flex items-center gap-1 text-xs">
+                <CheckCircle className="w-4 h-4 text-black" />
                 SUCCESS
               </span>
             </div>
-            <p className="text-xs text-gray-300">
-              All SIC instructions executed step by step with verified register & memory updates.
+            <p className="text-xs font-extrabold text-black mt-1">
+              All SIC assembly instructions executed step-by-step with verified 24-bit register & memory updates.
             </p>
           </div>
         </div>
 
-        <div className="flex items-center gap-6 bg-[#090f1e]/80 px-4 py-2.5 rounded-xl border border-gray-800 font-mono text-sm">
+        <div className="flex items-center gap-4 bg-white p-3 border-3 border-black shadow-[4px_4px_0px_0px_#000] font-mono text-sm">
           <div>
-            <span className="text-gray-400 text-xs block">NUM1</span>
-            <span className="font-bold text-cyan-400">{num1Val}</span>
+            <span className="text-stone-600 text-xs font-bold block uppercase">NUM1</span>
+            <span className="font-black text-black text-base">{num1Val}</span>
           </div>
 
-          <div className="text-gray-600 font-bold">+</div>
+          <div className="text-black font-black text-lg">+</div>
 
           <div>
-            <span className="text-gray-400 text-xs block">NUM2</span>
-            <span className="font-bold text-purple-400">{num2Val}</span>
+            <span className="text-stone-600 text-xs font-bold block uppercase">NUM2</span>
+            <span className="font-black text-black text-base">{num2Val}</span>
           </div>
 
-          <div className="text-gray-600 font-bold">=</div>
+          <div className="text-black font-black text-lg">=</div>
 
-          <div className="bg-emerald-500/20 px-3 py-1 rounded-md border border-emerald-500/30">
-            <span className="text-emerald-300 text-xs block">RESULT</span>
-            <span className="font-extrabold text-emerald-400 text-base">{resultVal}</span>
+          <div className="bg-yellow-300 px-3 py-1 border-2 border-black">
+            <span className="text-black text-xs font-bold block uppercase">RESULT</span>
+            <span className="font-black text-black text-xl">{resultVal}</span>
           </div>
 
-          <div className="pl-4 border-l border-gray-800 text-xs">
-            <span className="text-gray-400 block flex items-center gap-1">
-              <Hash className="w-3 h-3" /> Total Steps
+          <div className="pl-3 border-l-2 border-black text-xs font-bold">
+            <span className="text-black block flex items-center gap-1 uppercase">
+              <Hash className="w-3.5 h-3.5" /> Total Steps
             </span>
-            <span className="font-bold text-white">{totalSteps}</span>
+            <span className="font-black text-black text-base">{totalSteps}</span>
           </div>
         </div>
       </div>

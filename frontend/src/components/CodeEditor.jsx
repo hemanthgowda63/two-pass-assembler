@@ -11,42 +11,38 @@ export default function CodeEditor({
   const lines = code.split('\n');
 
   return (
-    <div className="glass-card p-4 flex flex-col h-full">
-      <div className="flex items-center justify-between mb-3">
+    <div className="brutalist-card flex flex-col h-full bg-white border-3 border-black shadow-[6px_6px_0px_0px_#000]">
+      <div className="flex items-center justify-between mb-3 border-b-3 border-black pb-2">
         <div className="flex items-center gap-2">
-          <Code className="w-4 h-4 text-cyan-400" />
-          <h2 className="text-sm font-bold tracking-wide text-gray-200 uppercase">
-            Assembly Code Editor
+          <Code className="w-5 h-5 text-black" />
+          <h2 className="text-sm font-black tracking-wide text-black uppercase">
+            Assembly Source Editor
           </h2>
         </div>
         <button
           onClick={onAssembleAndRun}
           disabled={isAssembling}
-          className="btn btn-primary text-xs py-1.5 px-3"
+          className="brutalist-btn brutalist-btn-green text-xs py-1.5 px-3"
         >
           {isAssembling ? (
-            <RefreshCw className="w-3.5 h-3.5 animate-spin" />
+            <RefreshCw className="w-4 h-4 animate-spin" />
           ) : (
-            <Play className="w-3.5 h-3.5 fill-current" />
+            <Play className="w-4 h-4 fill-current" />
           )}
-          Assemble & Run
+          Assemble & Execute
         </button>
       </div>
 
-      <div className="relative flex-1 flex rounded-lg overflow-hidden border border-gray-800 bg-[#0a0f1d] font-mono text-sm">
+      <div className="editor-container flex-1">
         {/* Line Numbers */}
-        <div className="py-3 px-2.5 bg-[#0e1628] text-gray-500 select-none text-right font-mono text-xs border-r border-gray-800/80">
+        <div className="editor-line-numbers">
           {lines.map((_, idx) => {
             const lineNum = idx + 1;
             const isCurrent = lineNum === currentLineNumber;
             return (
               <div
                 key={idx}
-                className={`h-6 leading-6 px-1 transition-colors ${
-                  isCurrent
-                    ? 'text-yellow-400 font-bold bg-yellow-500/20 rounded-sm'
-                    : ''
-                }`}
+                className={`editor-line-num ${isCurrent ? 'active' : ''}`}
               >
                 {lineNum}
               </div>
@@ -54,19 +50,19 @@ export default function CodeEditor({
           })}
         </div>
 
-        {/* Text Area Input */}
+        {/* Text Area */}
         <textarea
           value={code}
           onChange={(e) => onChangeCode(e.target.value)}
           spellCheck={false}
-          className="w-full h-full p-3 bg-transparent text-gray-200 resize-none outline-none font-mono text-xs leading-6 selection:bg-cyan-500/30"
+          className="editor-textarea"
           placeholder="Enter SIC Assembly code here..."
         />
       </div>
 
-      <div className="mt-2 text-[11px] text-gray-500 flex items-center justify-between">
-        <span>Standard SIC Instructions Supported (LDA, ADD, STA, JSUB, RSUB, WORD, RESW...)</span>
-        <span>{lines.length} Lines</span>
+      <div className="mt-2 text-[11px] font-bold text-stone-700 flex items-center justify-between uppercase">
+        <span>SIC Standard Opcodes Supported</span>
+        <span>{lines.length} Lines Total</span>
       </div>
     </div>
   );

@@ -17,32 +17,32 @@ export default function StepController({
   const isAtEnd = totalSteps === 0 || currentStepIndex >= totalSteps - 1;
 
   return (
-    <div className="glass-card p-4 flex flex-wrap items-center justify-between gap-4">
+    <div className="brutalist-card bg-amber-200 border-3 border-black shadow-[6px_6px_0px_0px_#000] flex flex-wrap items-center justify-between gap-4">
       {/* Control Buttons */}
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-2.5">
         <button
           onClick={onReset}
-          className="btn btn-secondary text-xs py-2 px-3"
+          className="brutalist-btn brutalist-btn-white text-xs py-2 px-3"
           title="Reset to Step 0"
         >
-          <RotateCcw className="w-3.5 h-3.5" />
+          <RotateCcw className="w-4 h-4" />
           Reset
         </button>
 
         <button
           onClick={onStepBackward}
           disabled={isAtStart || isPlaying}
-          className="btn btn-secondary text-xs py-2 px-3"
+          className="brutalist-btn brutalist-btn-white text-xs py-2 px-3"
           title="Previous Step"
         >
-          <SkipBack className="w-3.5 h-3.5" />
+          <SkipBack className="w-4 h-4" />
           Prev Step
         </button>
 
         {isPlaying ? (
           <button
             onClick={onPause}
-            className="btn btn-primary bg-amber-500 text-black text-xs py-2 px-4 shadow-amber-500/20"
+            className="brutalist-btn brutalist-btn-pink text-xs py-2 px-4"
           >
             <Pause className="w-4 h-4 fill-current" />
             Pause
@@ -51,7 +51,7 @@ export default function StepController({
           <button
             onClick={onPlay}
             disabled={isAtEnd}
-            className="btn btn-primary text-xs py-2 px-4"
+            className="brutalist-btn brutalist-btn-cyan text-xs py-2 px-4"
           >
             <Play className="w-4 h-4 fill-current" />
             Auto Run
@@ -61,7 +61,7 @@ export default function StepController({
         <button
           onClick={onStepForward}
           disabled={isAtEnd || isPlaying}
-          className="btn btn-primary text-xs py-2 px-4 bg-cyan-500 text-black"
+          className="brutalist-btn brutalist-btn-green text-xs py-2 px-4"
           title="Next Step"
         >
           <span>Step Forward</span>
@@ -69,17 +69,16 @@ export default function StepController({
         </button>
       </div>
 
-      {/* Progress & Step Counter */}
-      <div className="flex items-center gap-3">
-        <div className="text-xs font-mono font-medium text-gray-300">
-          Step <span className="text-cyan-400 font-bold">{totalSteps > 0 ? currentStepIndex + 1 : 0}</span> of{' '}
-          <span className="text-gray-400">{totalSteps}</span>
+      {/* Progress & Speed */}
+      <div className="flex items-center gap-4">
+        <div className="brutalist-badge brutalist-badge-white text-sm py-1 px-3">
+          STEP <span className="font-black text-black">{totalSteps > 0 ? currentStepIndex + 1 : 0}</span> / {totalSteps}
         </div>
 
         {/* Speed Slider */}
-        <div className="flex items-center gap-2 bg-[#0e1628] px-3 py-1.5 rounded-lg border border-gray-800">
-          <Sliders className="w-3.5 h-3.5 text-gray-400" />
-          <span className="text-[11px] text-gray-400 font-mono">Speed:</span>
+        <div className="flex items-center gap-2 bg-white px-3 py-1.5 border-2 border-black shadow-[2px_2px_0px_0px_#000]">
+          <Sliders className="w-4 h-4 text-black" />
+          <span className="text-xs font-bold font-mono uppercase">Speed:</span>
           <input
             type="range"
             min="200"
@@ -87,9 +86,9 @@ export default function StepController({
             step="100"
             value={2200 - speedMs}
             onChange={(e) => onChangeSpeed(2200 - Number(e.target.value))}
-            className="w-20 accent-cyan-400 cursor-pointer"
+            className="w-24 accent-black cursor-pointer"
           />
-          <span className="text-[10px] text-cyan-400 font-mono w-10 text-right">
+          <span className="text-xs font-mono font-bold w-12 text-right">
             {(speedMs / 1000).toFixed(1)}s
           </span>
         </div>

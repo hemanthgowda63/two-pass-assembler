@@ -3,17 +3,17 @@ import { Cpu, BookOpen, Server } from 'lucide-react';
 
 export default function Header({ isConnected, onResetSample }) {
   return (
-    <header className="glass-card p-4 mb-6 flex flex-wrap items-center justify-between gap-4 border-b border-cyan-500/20">
+    <header className="brutalist-card bg-amber-300 flex flex-wrap items-center justify-between gap-4 border-4 border-black shadow-[6px_6px_0px_0px_#000]">
       <div className="flex items-center gap-3">
-        <div className="p-3 bg-gradient-to-br from-cyan-500/20 to-blue-600/20 border border-cyan-400/30 rounded-xl text-cyan-400">
-          <Cpu className="w-8 h-8 animate-pulse" />
+        <div className="p-3 bg-black text-yellow-300 border-2 border-black shadow-[3px_3px_0px_0px_#000]">
+          <Cpu className="w-8 h-8" />
         </div>
         <div>
-          <h1 className="text-2xl font-bold tracking-tight bg-gradient-to-r from-cyan-400 via-sky-300 to-indigo-300 bg-clip-text text-transparent">
-            SIC Assembly Visualizer & Simulator
+          <h1 className="text-2xl md:text-3xl font-black uppercase tracking-tight text-black">
+            SIC Assembly Visualizer
           </h1>
-          <p className="text-xs text-gray-400 font-medium">
-            Step-by-step execution of Simplified Instructional Computer (SIC)
+          <p className="text-xs font-bold text-stone-900 uppercase tracking-wide">
+            Step-by-Step Educational Execution Engine (Simplified Instructional Computer)
           </p>
         </div>
       </div>
@@ -21,15 +21,15 @@ export default function Header({ isConnected, onResetSample }) {
       <div className="flex items-center gap-3">
         <button
           onClick={onResetSample}
-          className="btn btn-secondary text-xs py-1.5 px-3 flex items-center gap-1.5"
+          className="brutalist-btn brutalist-btn-white text-xs py-2 px-3"
         >
-          <BookOpen className="w-3.5 h-3.5 text-cyan-400" />
+          <BookOpen className="w-4 h-4" />
           Load Sample Program
         </button>
 
-        <div className={`badge ${isConnected ? 'badge-emerald' : 'badge-amber'} flex items-center gap-1.5`}>
+        <div className={`brutalist-badge ${isConnected ? 'brutalist-badge-green' : 'brutalist-badge-cyan'}`}>
           <Server className="w-3.5 h-3.5" />
-          <span>{isConnected ? 'Java Backend Live' : 'Client Engine Ready'}</span>
+          <span>{isConnected ? 'JAVA BACKEND CONNECTED' : 'STANDALONE ENGINE READY'}</span>
         </div>
       </div>
     </header>
