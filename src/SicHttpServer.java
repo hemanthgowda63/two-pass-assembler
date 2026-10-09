@@ -30,9 +30,10 @@ public class SicHttpServer {
     static class AssembleHandler implements HttpHandler {
         @Override
         public void handle(HttpExchange exchange) throws IOException {
-            exchange.getResponseHeaders().add("Access-Control-Allow-Origin", "*");
-            exchange.getResponseHeaders().add("Access-Control-Allow-Methods", "POST, GET, OPTIONS");
-            exchange.getResponseHeaders().add("Access-Control-Allow-Headers", "Content-Type");
+            // Full CORS Headers for cross-origin access
+            exchange.getResponseHeaders().set("Access-Control-Allow-Origin", "*");
+            exchange.getResponseHeaders().set("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+            exchange.getResponseHeaders().set("Access-Control-Allow-Headers", "Content-Type, Authorization");
 
             if (exchange.getRequestMethod().equalsIgnoreCase("OPTIONS")) {
                 exchange.sendResponseHeaders(204, -1);
@@ -46,7 +47,7 @@ public class SicHttpServer {
 
             InputStream is = exchange.getRequestBody();
             String body = new String(is.readAllBytes(), StandardCharsets.UTF_8);
-            String code = extractCodeFromJsonOrRaw(body);
+            String code = parseCodeFromBody(body);
 
             if (code == null || code.trim().isEmpty()) {
                 sendResponse(exchange, 400, "{\"success\":false,\"errorMessage\":\"Source code is empty\"}");
@@ -64,23 +65,26 @@ public class SicHttpServer {
     static class HealthHandler implements HttpHandler {
         @Override
         public void handle(HttpExchange exchange) throws IOException {
-            exchange.getResponseHeaders().add("Access-Control-Allow-Origin", "*");
+            exchange.getResponseHeaders().set("Access-Control-Allow-Origin", "*");
             sendResponse(exchange, 200, "{\"status\":\"OK\",\"service\":\"SIC Assembler Simulator API\"}");
         }
     }
 
-    private static String extractCodeFromJsonOrRaw(String body) {
-        if (body.trim().startsWith("{")) {
-            int idx = body.indexOf("\"code\"");
-            if (idx != -1) {
-                int colonIdx = body.indexOf(":", idx);
+    private static String parseCodeFromBody(String body) {
+        if (body == null) return "";
+        String trimmed = body.trim();
+        if (trimmed.startsWith("{")) {
+            // Simple JSON field extraction for "code": "..."
+            int keyIdx = trimmed.indexOf("\"code\"");
+            if (keyIdx != -1) {
+                int colonIdx = trimmed.indexOf(":", keyIdx);
                 if (colonIdx != -1) {
-                    int startQuote = body.indexOf("\"", colonIdx + 1);
+                    int startQuote = trimmed.indexOf("\"", colonIdx + 1);
                     if (startQuote != -1) {
                         StringBuilder sb = new StringBuilder();
                         boolean escaped = false;
-                        for (int i = startQuote + 1; i < body.length(); i++) {
-                            char c = body.charAt(i);
+                        for (int i = startQuote + 1; i < trimmed.length(); i++) {
+                            char c = trimmed.charAt(i);
                             if (escaped) {
                                 if (c == 'n') sb.append('\n');
                                 else if (c == 'r') sb.append('\r');

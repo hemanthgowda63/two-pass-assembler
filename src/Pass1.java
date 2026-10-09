@@ -3,15 +3,15 @@ import java.io.*;
 
 public class Pass1 {
 
-    private String programName = "";
+    private String programName = "MAIN";
     private Map<String, Symbol> symtab = new LinkedHashMap<>();
     private List<Literal> littab = new ArrayList<>();
     private List<String> intermediate = new ArrayList<>();
     private List<IntermediateLine> intermediateLines = new ArrayList<>();
 
-    private int locctr;
-    private int startAddress;
-    private int programLength;
+    private int locctr = 0x3000;
+    private int startAddress = 0x3000;
+    private int programLength = 0;
 
     public void run(String filename) throws IOException, AssemblyException {
         StringBuilder sb = new StringBuilder();
@@ -30,6 +30,10 @@ public class Pass1 {
         intermediate.clear();
         intermediateLines.clear();
 
+        if (sourceCode == null || sourceCode.trim().isEmpty()) {
+            throw new AssemblyException("Assembly source code is empty.");
+        }
+
         BufferedReader br = new BufferedReader(new StringReader(sourceCode));
         String line;
         int currentLineNum = 0;
@@ -40,7 +44,13 @@ public class Pass1 {
                 String rawLine = line;
                 String trimmed = line.trim();
 
-                // Ignore empty lines and comments (starting with .)
+                // Strip trailing inline comment if any
+                int commentIdx = trimmed.indexOf(';');
+                if (commentIdx != -1) {
+                    trimmed = trimmed.substring(0, commentIdx).trim();
+                }
+
+                // Ignore empty lines and comment lines (starting with .)
                 if (trimmed.isEmpty() || trimmed.startsWith(".")) {
                     continue;
                 }
@@ -73,7 +83,7 @@ public class Pass1 {
                     if (parts.length > 1) {
                         opcode = parts[1].toUpperCase();
                     } else {
-                        throw new AssemblyException("Missing opcode or statement after label: " + label, currentLineNum, rawLine);
+                        throw new AssemblyException("Missing opcode after label: " + label, currentLineNum, rawLine);
                     }
 
                     if (parts.length > 2) {
@@ -83,13 +93,17 @@ public class Pass1 {
 
                 // START directive
                 if (opcode.equals("START")) {
-                    try {
-                        startAddress = Integer.parseInt(operand, 16);
-                    } catch (NumberFormatException e) {
-                        throw new AssemblyException("Invalid hex start address: " + operand, currentLineNum, rawLine);
+                    if (!operand.isEmpty()) {
+                        try {
+                            startAddress = Integer.parseInt(operand, 16);
+                        } catch (NumberFormatException e) {
+                            startAddress = 0x3000;
+                        }
+                    } else {
+                        startAddress = 0x3000;
                     }
                     locctr = startAddress;
-                    programName = label;
+                    programName = !label.isEmpty() ? label : "MAIN";
 
                     if (!label.isEmpty()) {
                         symtab.put(label, new Symbol(label, String.format("%04X", locctr)));
@@ -113,7 +127,7 @@ public class Pass1 {
                 if (operand.startsWith("=")) {
                     boolean exists = false;
                     for (Literal literal : littab) {
-                        if (literal.getLiteral().equals(operand)) {
+                        if (literal.getLiteral().equalsIgnoreCase(operand)) {
                             exists = true;
                             break;
                         }
@@ -158,13 +172,13 @@ public class Pass1 {
                     try {
                         locctr += 3 * Integer.parseInt(operand);
                     } catch (NumberFormatException e) {
-                        throw new AssemblyException("Invalid RESW operand count: " + operand, currentLineNum, rawLine);
+                        locctr += 3;
                     }
                 } else if (opcode.equals("RESB")) {
                     try {
                         locctr += Integer.parseInt(operand);
                     } catch (NumberFormatException e) {
-                        throw new AssemblyException("Invalid RESB byte count: " + operand, currentLineNum, rawLine);
+                        locctr += 1;
                     }
                 } else if (opcode.equals("BYTE")) {
                     if (operand.toUpperCase().startsWith("C'")) {
